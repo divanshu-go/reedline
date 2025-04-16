@@ -531,8 +531,12 @@ impl IdeMenu {
             let match_str = &string
                 [match_position..match_position + match_len.min(string.len() - match_position)];
 
-            // Prefix is everything before the match
-            let prefix = &string[..match_position];
+            // Prefix is everything before the match, concatenated with prefix_string if it exists
+            let prefix = if let Some(prefix_str) = &suggestion.prefix_string {
+                format!("{}{}", prefix_str, &string[..match_position])
+            } else {
+                string[..match_position].to_string()
+            };
 
             // Remaining is everything after the match
             let remaining_str = &string[match_position + match_str.len()..];
@@ -1405,6 +1409,7 @@ mod tests {
             extra: None,
             span: Span { start: 0, end: pos },
             append_whitespace: false,
+            prefix_string: None,
         }
     }
 

@@ -90,4 +90,6 @@ pub struct Suggestion {
     /// Whether to append a space after selecting this suggestion.
     /// This helps to avoid that a completer repeats the complete suggestion.
     pub append_whitespace: bool,
+    /// Optional prefix string that will be concatenated with the value up to the match position
+    pub prefix_string: Option<String>,
 }

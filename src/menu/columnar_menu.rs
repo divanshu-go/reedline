@@ -318,8 +318,12 @@ impl ColumnarMenu {
             let match_str = &suggestion.value[match_position
                 ..match_position + match_len.min(suggestion.value.len() - match_position)];
 
-            // Prefix is everything before the match
-            let prefix = &suggestion.value[..match_position];
+            // Prefix is everything before the match, concatenated with prefix_string if it exists
+            let prefix = if let Some(prefix_str) = &suggestion.prefix_string {
+                format!("{}{}", prefix_str, &suggestion.value[..match_position])
+            } else {
+                suggestion.value[..match_position].to_string()
+            };
 
             // Remaining is everything after the match
             let remaining_str = &suggestion.value[match_position + match_str.len()..];
@@ -784,6 +788,7 @@ mod tests {
             extra: None,
             span: Span { start: 0, end: pos },
             append_whitespace: false,
+            prefix_string: None,
         }
     }
 
